@@ -14,11 +14,12 @@ class PayUException extends HttpException
 {
     private $model;
 
-    public static function newInstance($status = null, $model = null)
+    public static function newInstance($status = null, $model = null, $contextMessage = '')
     {
         $label = 'PayUException';
 
         $parts = array(
+            $contextMessage,
             $label
         );
         if ($status) {

@@ -24,21 +24,33 @@ class OpenPayUWrapper
         $this->oauthSecret = $oauthSecret;
     }
 
+    /**
+     * @throws \OpenPayU_Exception
+     */
     public function create($order)
     {
         return \OpenPayU_Order::create($order);
     }
 
+    /**
+     * @throws \OpenPayU_Exception
+     */
     public function refund($id, $description = 'Refund')
     {
         return \OpenPayU_Refund::create($id, $description);
     }
 
+    /**
+     * @throws \OpenPayU_Exception
+     */
     public function retrieve($id)
     {
         return \OpenPayU_Order::retrieve($id);
     }
 
+    /**
+     * @throws \OpenPayU_Exception
+     */
     public function retrievePayMethods($userId, $userEmail)
     {
         \OpenPayU_Configuration::setOauthClientId($this->oauthClientId);

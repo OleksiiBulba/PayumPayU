@@ -83,7 +83,7 @@ class RefundPayUAction implements ApiAwareInterface, ActionInterface, GenericTok
             return;
         }
 
-        $openPayU = $this->getOpenPayUWrapper() ? $this->getOpenPayUWrapper() : new OpenPayUWrapper(
+        $openPayU = $this->getOpenPayUWrapper() ?: new OpenPayUWrapper(
             $environment,
             $signature,
             $posId,
@@ -91,17 +91,15 @@ class RefundPayUAction implements ApiAwareInterface, ActionInterface, GenericTok
             $this->api['oauth_secret']
         );
 
-
-
         if (!isset($details['orderId']) || !($orderId = $details['orderId'])) {
-            throw PayUException::newInstance(null, $firstModel);
+            throw PayUException::newInstance(null, $firstModel, 'orderId is empty');
         }
 
         try {
             $response = $openPayU->refund($orderId)->getResponse();
             $this->updateRefundStatus($details, $response->refund->status, $request);
         } catch (\Exception $exception) {
-            throw PayUException::newInstance(null, $firstModel);
+            throw PayUException::newInstance(null, $firstModel, $exception->getMessage());
         }
     }
 
